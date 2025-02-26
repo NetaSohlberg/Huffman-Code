@@ -16,6 +16,10 @@ This repository implements the **Huffman Coding** algorithm in C++. Huffman Codi
 
 ## How Huffman Coding Works (Step by Step)
 
+Huffman coding follows these steps to build an optimal prefix-free encoding scheme. If two nodes have the same frequency, they are ordered alphabetically.
+
+### Example: Encoding "hello"
+
 Let's encode the word **"hello"** using Huffman Coding:
 
 1. **Calculate Character Frequencies**
@@ -29,24 +33,58 @@ Let's encode the word **"hello"** using Huffman Coding:
    - Merge the two smallest nodes iteratively to form a tree.
 
 3. **Construct the Huffman Tree**
-   - Merge `h` (1) and `e` (1) → new node (2)
-   - Merge `o` (1) and `l` (2) → new node (3)
-   - Merge nodes (2) and (3) → root node (5)
 
-4. **Assign Binary Codes**
-   - Traverse the tree:
-     - `h`: `00`
-     - `e`: `01`
-     - `l`: `10`
-     - `o`: `11`
+The Huffman tree is built iteratively by merging the two least frequent nodes at each step until a single root node remains. Below is a step-by-step ASCII illustration of how the tree for "hello" is constructed.
 
-5. **Encode the Word "hello"**
-   - `h` → `00`
-   - `e` → `01`
-   - `l` → `10`
-   - `l` → `10`
-   - `o` → `11`
-   - Final Encoded Output: `0001101011`
+a. **Start with individual nodes sorted by frequency (Alphabetical order in case of ties):**
+```
+   e(1)   h(1)   o(1)   l(2)
+```
 
-6. **Decoding**
+b. **Merge the two smallest nodes (`e` and `h`)**:
+```
+     (2)
+    /   \
+  e(1)  h(1)   o(1)   l(2)
+```
+
+c. **Merge `o(1)` with `l(2)`, creating a new node (3):**
+```
+     (2)        (3)
+    /   \      /   \
+  e(1)  h(1) o(1) l(2)
+```
+
+d. **Merge the two remaining nodes (2 and 3) to create the root node (5):**
+```
+           (5)
+       /        \
+     (2)        (3)
+    /   \      /   \
+  e(1)  h(1) o(1) l(2)
+```
+
+Each left branch represents a `0`, and each right branch represents a `1`. This means:
+   - `e` → `00`
+   - `h` → `01`
+   - `o` → `10`
+   - `l` → `11`
+
+These binary codes are assigned based on the tree structure by following the path from the root to each leaf node.
+
+4. **Encode the Word "hello"**
+   - `h` → `01`
+   - `e` → `00`
+   - `l` → `11`
+   - `l` → `11`
+   - `o` → `10`
+   - Final Encoded Output: `0100111110`
+
+7. **Encoding Parameters**
+     - `n = 4` (number of unique characters)
+     - `Letters = ehol` (order of characters in encoding)
+     - `Encoded Structure = 0011011` (tree structure)
+     - `Encoded Text = 0100111110` (Huffman encoded word)
+
+8. **Decoding**
    - Traverse the tree using binary values to retrieve original characters.
